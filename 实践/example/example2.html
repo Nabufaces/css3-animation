@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+</body>
+    <script type="text/javascript" src="../css3d/css3d.js"></script>
+    <script>
+        window.onload = function () {
+            const s = new C3D.Stage();
+            s.size(window.innerWidth,window.innerHeight).updateO();
+            document.body.appendChild(s.el);
+
+            const imgs = [
+                {url:'../images/p1.png'},
+                {url:'../images/p2.png'},
+                {url:'../images/p3.png'},
+                {url:'../images/p4.png'},
+                {url:'../images/p5.png'},
+                {url:'../images/p6.png'},
+                {url:'../images/p7.png'},
+                {url:'../images/p8.png'},
+                {url:'../images/p9.png'},
+                {url:'../images/p10.png'},
+                {url:'../images/p11.png'},
+                {url:'../images/p12.png'},
+                {url:'../images/p13.png'},
+                {url:'../images/p14.png'},
+                {url:'../images/p15.png'},
+                {url:'../images/p16.png'},
+                {url:'../images/p17.png'},
+                {url:'../images/p18.png'},
+                {url:'../images/p19.png'},
+                {url:'../images/p20.png'}
+            ];
+
+            const callTranslateZ = (width, len) => {
+                return (width / 2) / Math.tan(Math.PI / len) ;
+            };
+
+            const panoRect = {w: 2586, h: 1170};
+
+            const createPano = (imgs, rect) => {
+                const imglen = imgs.length;
+                const radius = callTranslateZ(rect.w/imglen, imglen);
+
+                const sp = new C3D.Sprite();
+                for(let i = 0;i < imglen;i++){
+                    const p = new C3D.Plane();
+                    const _r = 360 / imglen * i;
+                    const _a = Math.PI * 2 /imglen * i;
+                    p.size(rect.w / imglen, rect.h)
+                        .position(Math.sin(_a)*radius, 0,  -Math.cos(_a)*radius)
+                        .rotation(0, -_r ,0)
+                        .material({
+                            image: imgs[i].url,
+                            /*bothsides: false*/
+                        }).update();
+                    sp.addChild(p);
+                }
+                return sp;
+            };
+
+            const pano = createPano(imgs,panoRect);
+            pano.position(0,0,-1000).updateT();
+            s.addChild(pano);
+
+            //响应屏幕调整尺寸
+            function resize() {
+                s.size(window.innerWidth, window.innerHeight).update();
+            }
+
+            window.onresize = function () {
+                resize();
+            };
+            resize();
+
+            //刷新场景
+            requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame || window.oRequestAnimationFrame ||
+                function (callback) {
+                    setTimeout(callback, Math.random()*1000);
+                };
+
+            function go() {
+                pano.rotate(0, 0.2, 0).updateT();
+                requestAnimationFrame(go);
+            }
+
+            requestAnimationFrame(go);
+        }
+
+
+    </script>
+</html>

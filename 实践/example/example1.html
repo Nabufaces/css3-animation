@@ -11,19 +11,19 @@
     <script>
         window.onload = function () {
             // 创建场景
-            let s = new C3D.Stage();
+            const s = new C3D.Stage();
             s.size(window.innerWidth,window.innerHeight).material({
                 color: "#fff"
             }).update();
             document.body.appendChild(s.el);
 
             //创建容器
-            let sp = new C3D.Sprite();
+            const sp = new C3D.Sprite();
             sp.position(0,0,-800).update();
             s.addChild(sp);
 
             for(let i = 0;i < 20;i++){
-                let p = new C3D.Plane();
+                const p = new C3D.Plane();
                 p.size(100,100,100)
                     .position(Math.random() * 500-250,Math.random() * 500-250,Math.random() * 500-250)
                     .rotation(Math.random() * 300-150,Math.random() * 300-150,Math.random() * 300-150)
@@ -41,9 +41,9 @@
                 });
             }
 
-            /*//创建4个立方体放入容器，并定义鼠标事件
-            for (var i = 0; i < 4; i++) {
-                var p = new C3D.Box();
+            //创建4个立方体放入容器，并定义鼠标事件
+            for (let i = 0; i < 5; i++) {
+                const p = new C3D.Box();
                 p.size(100, 100, 100)
                     .position(Math.random() * 500 - 250, Math.random() * 500 - 250, Math.random() * 500 - 250)
                     .rotation(Math.random() * 300 - 150, Math.random() * 300 - 150, Math.random() * 300 - 150)
@@ -52,32 +52,31 @@
                     })
                     .update();
                 sp.addChild(p);
-                /!*p.on("mouseover", function() {
-                    this.le.scale(1.1).update();
+                p.on("mouseover", function() {
+                    this.le.scale(1.2).update();
                 });
                 p.on("mouseout", function() {
                     this.le.scale(1).update();
-                });*!/
-            }*/
-
-            //响应屏幕调整尺寸
-            function resize() {
-                s.size(window.innerWidth,window.innerHeight).update();
-            };
-            window.onresize = function() {
-                resize();
-            };
-            resize();
+                });
+            }
 
             //刷新场景
-            requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame || window.oRequestAnimationFrame ||
-                function(callback) {
-                    setTimeout(callback, 1000);
-                };
+            requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame 
+                                    || window.msRequestAnimationFrame || window.oRequestAnimationFrame ||
+                                    function(callback) {
+                                        setTimeout(callback, Math.random()*1000);
+                                    };
 
             function go() {
-                sp.rotate(0, 0.1, 0).updateT();
-                // sp.move(0, 1, 0).update();
+                sp.rotate(Math.random()).updateT();
+                /*obj.update();  //一般只在创建元件时调用,会刷新所有信息。
+                //等价于
+                obj.updateS();  //刷新尺寸  
+                obj.updateO();  //刷新旋转中心  
+                obj.updateT();  //刷新位置，角度  
+                obj.updateM();  //刷新材质  
+                obj.updateV();  //刷新可见性  
+                obj.updateF();  //刷新滤镜  */
 
                 requestAnimationFrame(go);
             }
