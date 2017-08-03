@@ -1,0 +1,104 @@
+.trangle {
+    border-top: 50px solid transparent;
+    border-right: 50px solid transparent;
+    border-left: 100px solid red
+}
+
+.circle {
+    -webkit-border-radius: 60px;
+    -moz-border-radius: 60px;
+    border-radius: 60px;
+    background-color: bisque;
+}
+
+.star-five{
+    width: 0;
+    height: 0;
+    color: red;
+    margin: 50px 0;
+    position: relative;
+    display: block;
+    border-left: 100px solid transparent;
+    border-right: 100px solid transparent;
+    border-bottom: 70px solid red;
+    -moz-transfrom:rotate(35deg);
+    -webkit-transform:rotate(35deg);
+    -ms-transform:rotate(35deg);
+    -o-transform:rotate(35deg);
+}
+
+.star-five:before{
+    width: 0;
+    height: 0;
+    border-left: 30px solid transparent;
+    border-right: 30px solid transparent;
+    border-bottom: 80px solid red;
+    position: absolute;
+    top: -45px;
+    left: -65px;
+    color: white;
+    display: block;
+    content: "";
+    -moz-transform:rotate(-35deg);
+    -webkit-transform:rotate(-35deg);
+    -ms-transform:rotate(-35deg);
+    -o-transform:rotate(-35deg);
+}
+.star-five:after{
+    width: 0;
+    height: 0;
+    display: block;
+    position: absolute;
+    color: red;
+    top: 3px;
+    left: -105px;
+    border-left: 100px solid transparent;
+    border-right: 100px solid transparent;
+    border-bottom: 70px solid red;
+    content: "";
+    -moz-transform:rotate(-70deg);
+    -webkit-transform:rotate(-70deg);
+    -ms-transform:rotate(-70deg);
+    -o-transform:rotate(-70deg);
+}
+
+.heart {
+    position: relative;
+    width: 100px;
+    height: 90px;
+}
+.heart:before,
+.heart:after {
+    position: absolute;
+    content: "";
+    left: 50px;
+    top: 0;
+    width: 50px;
+    height: 80px;
+    background: red;
+    -moz-border-radius: 50px 50px 0 0;
+    border-radius: 50px 50px 0 0;
+    -webkit-transform: rotate(-45deg);
+    -moz-transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
+    -o-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+    -webkit-transform-origin: 0 100%;
+    -moz-transform-origin: 0 100%;
+    -ms-transform-origin: 0 100%;
+    -o-transform-origin: 0 100%;
+    transform-origin: 0 100%;
+}
+.heart:after {
+    left: 0;
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    transform: rotate(45deg);
+    -webkit-transform-origin: 100% 100%;
+    -moz-transform-origin: 100% 100%;
+    -ms-transform-origin: 100% 100%;
+    -o-transform-origin: 100% 100%;
+    transform-origin :100% 100%;
+}
