@@ -231,6 +231,10 @@ obj.material({image:'', color:'', position:'', size:'', repeat:'', origin:'', bo
 obj.buttonMode(bool);  
 ```
 
+添加类
+```js
+obj.class(ClassName);
+```
 刷新相应的dom内容，位置，角度，尺寸，材质等信息只有在执行此命令后才会被作用到dom节点，以正常显示。一般只需要根据进行中的属性变化调用相应的update即可,比如只改变了x,y,z坐标就只要调用updateT()即可,不用调用update()这样很重的操作。  
 ```js
 obj.update();  //一般只在创建元件时调用,会刷新所有信息。
@@ -265,13 +269,15 @@ obj.updateF();  //刷新滤镜
 天空盒子，适合用来制作全景背景，指定材质时可以添加6面的图片定义。  
 *eg.{front:"",back:"",left:"",right:"",up:"",down:""}*  
 
-
-
-
 其他全局方法:  
 **C3D.getRandomColor();**  
-**C3D.rgb2hex();**  
-**C3D.hex2rgb();**  
+随机生成颜色
+
+**C3D.rgb2hex(r,g,b);**  
+rbg转换为16进制
+
+**C3D.hex2rgb(str);**  
+16进制转换为rbg
 
 **C3D.create(obj);**  
 此方法非常有用,可以帮助快速创建场景.  

@@ -1,0 +1,98 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+</head>
+<body>
+</body>
+    <script src="../css3d/css3d.js"></script>
+    <script>
+    //创建场景
+    const s = new C3D.Stage();
+    s.size(window.innerWidth, window.innerHeight).material({
+        color: "#ffffff"
+    }).update();
+    document.body.appendChild(s.el);
+
+    //创建一个三维容器（创建以方便分组使用）
+    const sp = new C3D.Sprite();
+    sp.position(0, 0, -600).update();
+    s.addChild(sp);
+
+    let isMoving = false;
+    let lastMouseX = 0;
+    let lastMouseY = 0;
+    let curMouseX = 0;
+    let curMouseY = 0;
+    let lastAngleX = 0;
+    let lastAngleY = 0;
+    let angleX = 0;
+    let angleY = 0;
+    const p = new C3D.Box();
+
+    p.size(300)
+       .material({
+            front: {color:C3D.getRandomColor()},
+            back: {color:C3D.getRandomColor()},
+            left: {color:C3D.getRandomColor()},
+            right: {color:C3D.getRandomColor()},
+            up: {color:C3D.getRandomColor()},
+            down: {image: '../images/mouse.jpg'}
+        })
+        .update();
+
+    sp.addChild(p);
+
+    document.addEventListener("mousedown", mouseDownHandler);
+
+    document.addEventListener("mouseup", mouseUpHandler);
+
+    function mouseDownHandler(evt) {
+        lastMouseX = evt.pageX;
+        lastMouseY = evt.pageY;
+        lastAngleX = angleX;
+        lastAngleY = angleY;
+        curMouseX = evt.pageX;
+        curMouseY = evt.pageY;
+
+        document.addEventListener("mousemove", mouseMoveHandler);
+    }
+
+    function mouseMoveHandler(evt) {
+        curMouseX = evt.pageX;
+        curMouseY = evt.pageY;
+    }
+
+    function mouseUpHandler(evt) {
+        curMouseX = evt.pageX;
+        curMouseY = evt.pageY;
+
+        document.removeEventListener("mousemove", mouseMoveHandler);
+    }
+
+    //刷新场景
+    requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame || window.oRequestAnimationFrame ||
+        function (callback) {
+            setTimeout(callback, 1000 / 60);
+        };
+
+    function go() {
+//            var _len = sp.children.length;
+//
+        angleX += (curMouseX - lastMouseX + lastAngleX - angleX) * 0.3;
+        angleY += (curMouseY - lastMouseY + lastAngleY - angleY) * 0.3;
+        angleY = Math.max(-60, Math.min(60, angleY));
+//            for(var i=0; i<_len; i++){
+//                var _p = sp.children[i];
+//                _p.rotation(-angleY, angleX, 0).update();
+////                    _p.rotate(0.0, 0.2, 0).update();
+//            }
+
+        console.log(`${angleX}  ${angleY}`);
+        sp.rotation(-angleY, angleX, 0).updateT();
+
+        requestAnimationFrame(go);
+    }
+
+    requestAnimationFrame(go);
+</script>
+</html>

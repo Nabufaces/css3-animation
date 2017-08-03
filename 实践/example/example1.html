@@ -29,6 +29,9 @@
                 p.size(120,120)
                     .position(Math.random() * 500-250,Math.random() * 500-250,Math.random() * 500-250)
                     .rotation(Math.random() * 300-150,Math.random() * 300-150,Math.random() * 300-150)
+                    .material({
+                        bothsides: false
+                    })
                     .buttonMode(true)
                     .update();
                 p.class('circle');
@@ -108,7 +111,7 @@
                         left: {image: '../images/mouse.jpg'},
                         right: {image: '../images/mouse.jpg'},
                         up: {image: '../images/mouse.jpg'},
-                        down: {image: '../images/mouse.jpg'},
+                        down: {image: '../images/mouse.jpg'}
                     })
                     .update();
                 p.on("mouseover", function() {
@@ -128,7 +131,7 @@
                                     };
 
             function go() {
-                sp.rotate(0,0.2,0).updateT();
+                sp.rotate(0,0,0.1).updateT();
                 /*obj.update();  //一般只在创建元件时调用,会刷新所有信息。
                 //等价于
                 obj.updateS();  //刷新尺寸  
