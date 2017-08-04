@@ -1,8 +1,44 @@
 <!DOCTYPE HTML>
 <html>
 <head>
+    <style>
+        #down{
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            bottom: 50%;
+            text-align: center;
+            transform: translate(-50%, 0);
+            display: none;
+        }
+
+        .map{
+            width: 100%;
+            background:url('../images/timg.jpg') center center no-repeat;
+            animation: spread 1.5s ease-in 300ms forwards;
+        }
+
+        @keyframes spread {
+            to {
+                top: 0;
+                bottom: 0;
+            }
+        }
+
+        .closeBtn {
+            width: 60px;
+            height: 60px;
+            position: absolute;
+            right: 60px;
+            top: 80px;
+        }
+    </style>
 </head>
 <body>
+    <div id="box"></div>
+    <div id="down">
+        <img src="../images/closeBtn.png" class="closeBtn" onclick="closeModal(this)">
+    </div>
 </body>
     <script src="../css3d/css3d.js"></script>
     <script>
@@ -11,14 +47,13 @@
     s.size(window.innerWidth, window.innerHeight).material({
         color: "#ffffff"
     }).update();
-    document.body.appendChild(s.el);
+    document.getElementById('box').appendChild(s.el);
 
     //创建一个三维容器（创建以方便分组使用）
     const sp = new C3D.Sprite();
     sp.position(0, 0, -600).update();
     s.addChild(sp);
 
-    let isMoving = false;
     let lastMouseX = 0;
     let lastMouseY = 0;
     let curMouseX = 0;
@@ -30,66 +65,85 @@
     const p = new C3D.Box();
 
     p.size(300)
+        .rotation(-45,-45)
        .material({
-            front: {color:C3D.getRandomColor()},
-            back: {color:C3D.getRandomColor()},
-            left: {color:C3D.getRandomColor()},
-            right: {color:C3D.getRandomColor()},
-            up: {color:C3D.getRandomColor()},
+            front: {color: 'red'},
+            back: {color:'yellow'},
+            left: {color:'black'},
+            right: {color:'green'},
+            up: {color:'blue'},
             down: {image: '../images/mouse.jpg'}
         })
         .update();
 
     sp.addChild(p);
 
-    document.addEventListener("mousedown", mouseDownHandler);
-
-    document.addEventListener("mouseup", mouseUpHandler);
-
-    function mouseDownHandler(evt) {
+    p.on('touchstart',(evt) => {
+        evt = evt.touches[0];
         lastMouseX = evt.pageX;
         lastMouseY = evt.pageY;
         lastAngleX = angleX;
         lastAngleY = angleY;
         curMouseX = evt.pageX;
         curMouseY = evt.pageY;
+    });
 
-        document.addEventListener("mousemove", mouseMoveHandler);
-    }
-
-    function mouseMoveHandler(evt) {
+    p.on('touchmove',(evt) => {
+        evt = evt.touches[0];
         curMouseX = evt.pageX;
         curMouseY = evt.pageY;
-    }
+    });
 
-    function mouseUpHandler(evt) {
-        curMouseX = evt.pageX;
-        curMouseY = evt.pageY;
+    p.on('touchend',() => {
+        showModal(findMaxPlane());
+    });
 
-        document.removeEventListener("mousemove", mouseMoveHandler);
-    }
+    const boxPlane = {
+        'front': 0 ,
+        'back': 0,
+        'left': 0,
+        'right': 0,
+        'up': 0,
+        'down': 0
+    };
+    const findMaxPlane = () => {
+        let {keys, values} = Object;
+        for(let key of keys(boxPlane)){
+            let _div = p[key].el.getBoundingClientRect();
+            boxPlane[key] = _div.width * _div.height;
+        }
+        for(let key of keys(boxPlane)){
+            if(boxPlane[key] === Math.max(...values(boxPlane))){
+                return key;
+            }
+        }
+    };
+
+    const showModal = (plane) => {
+        switch (plane) {
+            case "down":
+                document.querySelector("#down").style.display = "block";
+                document.querySelector("#down").className = "map";
+                break;
+        }
+    };
+
+    const closeModal = (target) => {
+        let id = target.parentNode.getAttribute('id');
+        document.querySelector(`#${id}`).style.display = "none";
+    };
 
     //刷新场景
     requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame || window.oRequestAnimationFrame ||
         function (callback) {
-            setTimeout(callback, 1000 / 60);
+            setTimeout(callback, 1000);
         };
 
     function go() {
-//            var _len = sp.children.length;
-//
+
         angleX += (curMouseX - lastMouseX + lastAngleX - angleX) * 0.3;
         angleY += (curMouseY - lastMouseY + lastAngleY - angleY) * 0.3;
-        angleY = Math.max(-60, Math.min(60, angleY));
-//            for(var i=0; i<_len; i++){
-//                var _p = sp.children[i];
-//                _p.rotation(-angleY, angleX, 0).update();
-////                    _p.rotate(0.0, 0.2, 0).update();
-//            }
-
-        console.log(`${angleX}  ${angleY}`);
-        sp.rotation(-angleY, angleX, 0).updateT();
-
+        sp.rotation(-angleY, angleX).updateT();
         requestAnimationFrame(go);
     }
 
