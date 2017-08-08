@@ -10,7 +10,9 @@
     <script>
         window.onload = function () {
             const s = new C3D.Stage();
-            s.size(window.innerWidth,window.innerHeight).updateO();
+            s.size(window.innerWidth,window.innerHeight).material({
+                color: "#cccccc"
+            }).updateO();
             document.body.appendChild(s.el);
 
             const imgs = [
@@ -41,12 +43,21 @@
             };
 
             const panoRect = {w: 2586, h: 1170};
+            let lastMouseX = 0;
+            let lastMouseY = 0;
+            let curMouseX = 0;
+            let curMouseY = 0;
+            let lastAngleX = 0;
+            let lastAngleY = 0;
+            let angleX = 0;
+            let angleY = 0;
+
+            const sp = new C3D.Sprite();
 
             const createPano = (imgs, rect) => {
                 const imglen = imgs.length;
                 const radius = callTranslateZ(rect.w/imglen, imglen);
 
-                const sp = new C3D.Sprite();
                 for(let i = 0;i < imglen;i++){
                     const p = new C3D.Plane();
                     const _r = 360 / imglen * i;
@@ -60,11 +71,20 @@
                             repeat:'no-repeat',
                             bothsides: false
                         }).update();
-                    p.on("mouseover", function() {
-                        this.le.scale(1.2).update();
+                    p.on('touchstart',(evt) => {
+                        evt = evt.touches[0];
+                        lastMouseX = evt.pageX;
+                        lastMouseY = evt.pageY;
+                        lastAngleX = angleX;
+                        lastAngleY = angleY;
+                        curMouseX = evt.pageX;
+                        curMouseY = evt.pageY;
                     });
-                    p.on("mouseout", function() {
-                        this.le.scale(1).update();
+
+                    p.on('touchmove',(evt) => {
+                        evt = evt.touches[0];
+                        curMouseX = evt.pageX;
+                        curMouseY = evt.pageY;
                     });
                     sp.addChild(p);
                 }
@@ -73,12 +93,14 @@
 
             const pano = createPano(imgs,panoRect);
 
-            pano.position(0,0,-8000).updateT();
+            /*pano.position(0,0,-8000).updateT();
             for(let i = 1,j = 1;j < 200;i++,j++){
                 setTimeout(function() {
                     pano.position(0,0,-8000+36*i).updateT();
                 },10*j);
-            }
+            }*/
+
+            pano.position(0,0,-400).updateT();
 
             s.addChild(pano);
 
@@ -99,7 +121,10 @@
                 };
 
             function go() {
-                pano.rotate(0, 0.2, 0).updateT();
+                /*pano.rotate(0, 0.2, 0).updateT();*/
+                angleX += (curMouseX - lastMouseX + lastAngleX - angleX);
+                angleY += (curMouseY - lastMouseY + lastAngleY - angleY);
+                sp.rotation(0,angleY).updateT();
                 requestAnimationFrame(go);
             }
 

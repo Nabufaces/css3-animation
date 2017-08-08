@@ -10,6 +10,7 @@
             text-align: center;
             transform: translate(-50%, 0);
             display: none;
+            background-color: #ffffff;
         }
 
         .map{
@@ -32,6 +33,60 @@
             right: 60px;
             top: 80px;
         }
+
+        #front img {
+            width: 150px;
+            height: 150px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+        }
+
+        @keyframes img_1 {
+            to{
+                transform: translate(-50%,0);
+            }
+        }
+
+        @keyframes img_2 {
+            to{
+                transform: translate(-50%,-100%);
+            }
+        }
+
+        @keyframes img_3 {
+            to{
+                transform: translate(-100%,-50%);
+            }
+        }
+
+        @keyframes img_4 {
+            to{
+                transform: translate(0,-50%);
+            }
+        }
+
+        #front img:nth-child(1) {
+            animation: img_1 1s ease;
+            animation-fill-mode: forwards;
+        }
+
+        #front img:nth-child(2) {
+            animation: img_2 1s ease;
+            animation-fill-mode: forwards;
+        }
+
+        #front img:nth-child(3) {
+            animation: img_3 1s ease;
+            animation-fill-mode: forwards;
+        }
+
+        #front img:nth-child(4) {
+            animation: img_4 1s ease;
+            animation-fill-mode: forwards;
+        }
+
     </style>
 </head>
 <body>
@@ -67,7 +122,7 @@
     p.size(300)
         .rotation(-45,-45)
        .material({
-            front: {color: 'red'},
+            front: {color: '#eeebe3'},
             back: {color:'yellow'},
             left: {color:'black'},
             right: {color:'green'},
@@ -125,6 +180,14 @@
                 document.querySelector("#down").style.display = "block";
                 document.querySelector("#down").className = "map";
                 break;
+            case "front":
+                p.front.el.innerHTML = '<div id="front">'+
+                                            '<img src="../images/_assets/studio_0001.jpg">'+
+                                            '<img src="../images/_assets/studio_0002.jpg">'+
+                                            '<img src="../images/_assets/studio_0003.jpg">'+
+                                            '<img src="../images/_assets/studio_0004.jpg">'+
+                                            '<img src="../images/_assets/studio_0005.jpg">'+
+                                        '</div>'
         }
     };
 
